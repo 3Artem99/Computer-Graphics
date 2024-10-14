@@ -363,7 +363,7 @@ num_ticks = 12
 plot_circle_with_ticks(radius, num_ticks)
 ```
 
-## Реализация алгоритма Сезерленда-Коэна
+## 2.1 Реализация алгоритма Сезерленда-Коэна
 ```sh
 import matplotlib.pyplot as plt
 
@@ -478,7 +478,7 @@ if __name__ == "__main__":
     # Vizualizatsiya
     draw_plot(lines, x_min, y_min, x_max, y_max)
 ```
-## Алгоритм Цирруса-Бека
+## 2.2 Реализация алгоритма Цирруса-Бека
 ```sh
 import numpy as np
 import matplotlib.pyplot as plt
