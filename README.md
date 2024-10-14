@@ -363,7 +363,7 @@ num_ticks = 12
 plot_circle_with_ticks(radius, num_ticks)
 ```
 
-##Реализация алгоритма Сезерленда-Коэна
+## Реализация алгоритма Сезерленда-Коэна
 ```sh
 import matplotlib.pyplot as plt
 
