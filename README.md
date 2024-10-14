@@ -2,7 +2,7 @@
 
 ## 1.1 Создать программу, которая рисует отрезок между двумя точками, заданными пользователем
 
-```sh
+```python
 import matplotlib.pyplot as plt  # Импортируем как plt для вызова plt.show()
 from matplotlib.pyplot import imshow
 from PIL import Image
@@ -65,7 +65,7 @@ img.save('Linia.png')
 
 ## 1.2 Создать программу, которая рисует окружность с заданным пользователем радиусом
 
-```sh
+```python
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -135,7 +135,7 @@ img.save('Krug.png')
 ```
  ## 1.3 Циферблат
 
-```sh
+```python
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -242,7 +242,7 @@ img.save('Clock.png')
 
 ## Правлю 1.2
 
-```sh
+```python
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -297,7 +297,7 @@ plot_circle(radius)
 
 ## Правлю 1.3
 
-```sh
+```python
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -364,7 +364,8 @@ plot_circle_with_ticks(radius, num_ticks)
 ```
 
 ## 2.1 Реализация алгоритма Сезерленда-Коэна
-```sh
+
+```python
 import matplotlib.pyplot as plt
 
 # Opredelyaem kody regionov dlya otsecheniya
@@ -478,8 +479,10 @@ if __name__ == "__main__":
     # Vizualizatsiya
     draw_plot(lines, x_min, y_min, x_max, y_max)
 ```
+
 ## 2.2 Реализация алгоритма Цирруса-Бека
-```sh
+
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 
