@@ -580,7 +580,7 @@ if __name__ == "__main__":
 
 ## Алгоритм заполнения замкнутых областей посредством горизонтального сканирования
 
-```pthon
+```python
 import matplotlib.pyplot as plt
 import numpy as np
 
