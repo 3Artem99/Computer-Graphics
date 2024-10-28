@@ -784,7 +784,7 @@ pygame.quit()
 ```
 
 
-## 8.2 Попытка 2
+### 8.2 Попытка 2
 ```python
 import time
 from PIL import Image
@@ -892,5 +892,61 @@ print(f"Время выполнения алгоритма Брезенхема 
 print(f"Время выполнения Pygame (через draw.line) на {num_pixels} пикселях: {pygame_time_draw_line:.6f} секунд")
 
 # Закрываем Pygame после всех замеров
+pygame.quit()
+```
+
+### 8.3 Попытка 3
+```python
+import time
+import random
+import pygame
+
+# Инициализация Pygame
+pygame.init()
+screen = pygame.Surface((1000, 1000))
+
+# Функция алгоритма Брезенхема
+def bresenham_line(x1, y1, x2, y2):
+    points = []
+    dx = abs(x2 - x1)
+    dy = abs(y2 - y1)
+    sx = 1 if x1 < x2 else -1
+    sy = 1 if y1 < y2 else -1
+    err = dx - dy
+
+    while True:
+        points.append((x1, y1))
+        if x1 == x2 and y1 == y2:
+            break
+        e2 = err * 2
+        if e2 > -dy:
+            err -= dy
+            x1 += sx
+        if e2 < dx:
+            err += dx
+            y1 += sy
+    return points
+
+# Генерация случайных отрезков
+num_lines = 1000000  # Задаём большое количество отрезков
+segments = [(random.randint(0, 999), random.randint(0, 999), random.randint(0, 999), random.randint(0, 999)) for _ in range(num_lines)]
+
+# Измерение времени для алгоритма Брезенхема
+start_time = time.time()
+for x1, y1, x2, y2 in segments:
+    points = bresenham_line(x1, y1, x2, y2)
+end_time = time.time()
+bresenham_time = end_time - start_time
+print("Время выполнения алгоритма Брезенхема:", bresenham_time)
+
+# Измерение времени для метода Pygame
+start_time = time.time()
+for x1, y1, x2, y2 in segments:
+    pygame.draw.line(screen, (255, 255, 255), (x1, y1), (x2, y2))
+end_time = time.time()
+pygame_time = end_time - start_time
+print("Время выполнения метода Pygame:", pygame_time)
+
+# Завершение Pygame
 pygame.quit()
 ```
