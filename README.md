@@ -942,7 +942,7 @@ end_time = time.time()
 bresenham_time = end_time - start_time
 bresenham_density = total_bresenham_pixels / bresenham_time
 print("Время выполнения алгоритма Брезенхема:", bresenham_time)
-print("Плотность отрисовки для алгоритма Брезенхема (пиксели/сек):", bresenham_density)
+print("Плотность отрисовки для алгоритма Брезенхема (пиксели/сек):", bresenham_density) # ну я больше ничего не придумал :(
 
 # Замер для метода Pygame
 total_pygame_pixels = 0
@@ -955,7 +955,7 @@ end_time = time.time()
 pygame_time = end_time - start_time
 pygame_density = total_pygame_pixels / pygame_time
 print("Время выполнения метода Pygame:", pygame_time)
-print("Плотность отрисовки для метода Pygame (пиксели/сек):", pygame_density)
+print("Плотность отрисовки для метода Pygame (пиксели/сек):", pygame_density) 
 
 # Завершение Pygame
 pygame.quit()
