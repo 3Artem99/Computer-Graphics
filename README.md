@@ -701,8 +701,9 @@ plt.ylim(0, 5)
 plt.show()
 ```
 # ДЗ
-### 8. Золотов. Cравнение производительности алгоритма Брезенхема построения отрезков и метода из библиотеки pygame.
+## 8. Золотов. Cравнение производительности алгоритма Брезенхема построения отрезков и метода из библиотеки pygame.
 
+### 8.1 Первая попытка
 ```python
 import time
 import matplotlib.pyplot as plt
@@ -777,6 +778,118 @@ plt.show()
 
 # Сохранение изображения
 img.save('Visualized_Lines_not.png')
+
+# Закрываем Pygame после всех замеров
+pygame.quit()
+```
+
+
+## 8.2 Попытка 2
+```python
+import time
+from PIL import Image
+import pygame
+
+# Функция для рисования пикселей вдоль линии с помощью алгоритма Брезенхема
+def draw_line_bresenham(img, x0, y0, x1, y1, color):
+    dx = abs(x1 - x0)
+    dy = abs(y1 - y0)
+    sx = 1 if x0 < x1 else -1
+    sy = 1 if y0 < y1 else -1
+    err = dx - dy
+
+    while True:
+        # Проверяем границы изображения
+        if isinstance(img, Image.Image):  # Если это PIL изображение
+            if 0 <= x0 < img.width and 0 <= y0 < img.height:
+                img.putpixel((x0, y0), color)
+        elif isinstance(img, pygame.Surface):  # Если это поверхность Pygame
+            if 0 <= x0 < img.get_width() and 0 <= y0 < img.get_height():
+                img.set_at((x0, y0), color)
+        
+        if x0 == x1 and y0 == y1:
+            break
+        e2 = err * 2
+        if e2 > -dy:
+            err -= dy
+            x0 += sx
+        if e2 < dx:
+            err += dx
+            y0 += sy
+
+# Функция для замера времени рисования линии с помощью алгоритма Брезенхема
+def measure_bresenham(num_pixels):
+    img_width = num_pixels + 50  # Ширина изображения, чтобы влезло 1 миллион пикселей
+    img = Image.new('RGB', (img_width, 900), 'white')
+    x0, y0 = 50, 450  # Начальная точка
+    x1 = x0 + num_pixels  # Конечная точка
+    start_time = time.time()
+    draw_line_bresenham(img, x0, y0, x1, y0, (0, 0, 0))  # Чёрный цвет
+    end_time = time.time()
+    return end_time - start_time
+
+# Функция для замера времени рисования линии с помощью Брезенхема на Pygame Surface
+def measure_bresenham_draw_line(num_pixels):
+    screen_width = num_pixels + 50  # Ширина поверхности Pygame
+    screen = pygame.Surface((screen_width, 900))  # Создаем поверхность
+    x0, y0 = 50, 450  # Начальная точка
+    x1 = x0 + num_pixels  # Конечная точка
+    # Замер времени через time.time() для draw_line_bresenham на Pygame Surface
+    start_time = time.time()
+    draw_line_bresenham(screen, x0, y0, x1, y0, (0, 0, 0))  # Чёрный цвет
+    end_time = time.time()
+    return end_time - start_time
+
+# Функция для замера времени рисования линии с помощью Pygame (через Surface.set_at)
+def measure_pygame(num_pixels):
+    screen_width = num_pixels + 50  # Ширина поверхности Pygame
+    screen = pygame.Surface((screen_width, 900))  # Создаем поверхность
+    x0, y0 = 50, 450  # Начальная точка
+    x1 = x0 + num_pixels  # Конечная точка
+    start_time = time.time()
+    for x in range(x0, x1):
+        # Проверяем границы поверхности
+        if 0 <= x < screen_width and 0 <= y0 < 900:
+            screen.set_at((x, y0), (0, 0, 0))  # Чёрный цвет
+    end_time = time.time()
+    return end_time - start_time
+
+# Функция для замера времени рисования линии с помощью Pygame (через pygame.draw.line)
+def measure_pygame_draw_line(num_pixels):
+    screen_width = num_pixels + 50  # Ширина поверхности Pygame
+    screen = pygame.Surface((screen_width, 900))  # Создаем поверхность
+    x0, y0 = 50, 450  # Начальная точка
+    x1 = x0 + num_pixels  # Конечная точка
+
+    # Замер времени через time.time() для pygame.draw.line
+    start_time = time.time()
+    pygame.draw.line(screen, (0, 0, 0), (x0, y0), (x1, y0))
+    end_time = time.time()
+    
+    return end_time - start_time
+
+# Инициализируем Pygame один раз
+pygame.init()
+
+# Количество пикселей для рисования
+num_pixels = 1000000
+
+# Замер времени для алгоритма Брезенхема
+bresenham_time = measure_bresenham(num_pixels)
+
+bresenham_time_draw_line = measure_bresenham_draw_line(num_pixels)
+
+# Замер времени для Pygame через Surface.set_at
+pygame_time_set_at = measure_pygame(num_pixels)
+
+# Замер времени для Pygame через pygame.draw.line с использованием time.time()
+pygame_time_draw_line = measure_pygame_draw_line(num_pixels)
+
+# Выводим результаты
+print(f"Время выполнения алгоритма Брезенхема на {num_pixels} пикселях: {bresenham_time:.6f} секунд")
+print(f"Время выполнения Pygame на {num_pixels} пикселях: {pygame_time_set_at:.6f} секунд")
+print(f"Время выполнения алгоритма Брезенхема (через draw.line) на {num_pixels} пикселях: {bresenham_time_draw_line:.6f} секунд")
+print(f"Время выполнения Pygame (через draw.line) на {num_pixels} пикселях: {pygame_time_draw_line:.6f} секунд")
 
 # Закрываем Pygame после всех замеров
 pygame.quit()
