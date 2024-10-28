@@ -900,6 +900,7 @@ pygame.quit()
 import time
 import random
 import pygame
+import math
 
 # Инициализация Pygame
 pygame.init()
@@ -928,24 +929,33 @@ def bresenham_line(x1, y1, x2, y2):
     return points
 
 # Генерация случайных отрезков
-num_lines = 1000000  # Задаём большое количество отрезков
+num_lines = 1000000
 segments = [(random.randint(0, 999), random.randint(0, 999), random.randint(0, 999), random.randint(0, 999)) for _ in range(num_lines)]
 
-# Измерение времени для алгоритма Брезенхема
+# Замер для алгоритма Брезенхема
+total_bresenham_pixels = 0
 start_time = time.time()
 for x1, y1, x2, y2 in segments:
     points = bresenham_line(x1, y1, x2, y2)
+    total_bresenham_pixels += len(points)
 end_time = time.time()
 bresenham_time = end_time - start_time
+bresenham_density = total_bresenham_pixels / bresenham_time
 print("Время выполнения алгоритма Брезенхема:", bresenham_time)
+print("Плотность отрисовки для алгоритма Брезенхема (пиксели/сек):", bresenham_density)
 
-# Измерение времени для метода Pygame
+# Замер для метода Pygame
+total_pygame_pixels = 0
 start_time = time.time()
 for x1, y1, x2, y2 in segments:
     pygame.draw.line(screen, (255, 255, 255), (x1, y1), (x2, y2))
+    # Приближение числа пикселей для Pygame через длину отрезка
+    total_pygame_pixels += int(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2))
 end_time = time.time()
 pygame_time = end_time - start_time
+pygame_density = total_pygame_pixels / pygame_time
 print("Время выполнения метода Pygame:", pygame_time)
+print("Плотность отрисовки для метода Pygame (пиксели/сек):", pygame_density)
 
 # Завершение Pygame
 pygame.quit()
