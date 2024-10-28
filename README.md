@@ -943,6 +943,10 @@ bresenham_time = end_time - start_time
 bresenham_density = total_bresenham_pixels / bresenham_time
 print("Время выполнения алгоритма Брезенхема:", bresenham_time)
 print("Плотность отрисовки для алгоритма Брезенхема (пиксели/сек):", bresenham_density) # ну я больше ничего не придумал :(
+# Пояснения
+# Алгоритм Брезенхема строит линию, добавляя каждый пиксель, через который проходит линия, в список points
+# В итоге, len(points) точно указывает на количество пикселей, которые реально затронуты линией
+
 
 # Замер для метода Pygame
 total_pygame_pixels = 0
@@ -950,12 +954,17 @@ start_time = time.time()
 for x1, y1, x2, y2 in segments:
     pygame.draw.line(screen, (255, 255, 255), (x1, y1), (x2, y2))
     # Приближение числа пикселей для Pygame через длину отрезка
-    total_pygame_pixels += int(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2))
+    total_pygame_pixels += abs(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2))
 end_time = time.time()
 pygame_time = end_time - start_time
 pygame_density = total_pygame_pixels / pygame_time
 print("Время выполнения метода Pygame:", pygame_time)
 print("Плотность отрисовки для метода Pygame (пиксели/сек):", pygame_density) 
+# Пояснения
+# Метод pygame.draw.line() рисует линию, но не возвращает информацию о конкретных пикселях, через которые проходит линия.
+# Чтобы приблизительно оценить число пикселей, мы используем abs(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2))
+# Под корнем просто формула длины отрезка: <<c^2 = a^2 + b^2>>
+
 
 # Завершение Pygame
 pygame.quit()
